@@ -7,11 +7,16 @@ window.dadosApi('users/getMe', 'GET', undefined, jwt).then(dados => {
 
 //Listando tarefas criadas
 window.dadosApi('tasks','GET',undefined,jwt).then(dados => {
-    if(dados != ''){
-
+    if(typeof dados === 'object'){
+        
         dados.forEach((item) =>{
-            window.addTarefa(item.description, item.createdAt);
+            
+            
+            
+            window.addTarefa('#skeleton', item.description, item.createdAt, item.id);
         });
+        
+        
     }
 });
 
@@ -27,10 +32,14 @@ form.addEventListener('submit',(event)=>{
         };
         //Criando tarefa
         window.dadosApi('tasks','POST', tarefa, jwt).then(dados => {
-            window.addTarefa(dados.description, dados.createdAt);
+            window.addTarefa('#skeleton',dados.description, dados.createdAt, dados.id);
         })
     }
     else{
         alert('Digite o nome da tarefa');
     }
-})
+});
+
+
+
+
