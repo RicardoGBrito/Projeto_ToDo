@@ -112,8 +112,19 @@ a {
 
 /* Lista de tarefas ----------------------------------------------------------- */
 
+.selecao{
+  border: 2px solid var(--primary);
+}
+
 .hide{
   display: none;
+}
+
+
+
+ul.tarefas-terminadas li div.not-done{
+  background-color: var(--secondary);
+  
 }
 
 .tarefas-pendentes {
@@ -138,7 +149,7 @@ a {
   box-shadow: 2px 2px 5px lightgrey;
   border: 2px solid var(--secondary);
   z-index: 2;
-  transition: background-color 20000ms linear;
+  transition: background-color 1000ms linear;
 }
 
 .tarefa .not-done:hover {

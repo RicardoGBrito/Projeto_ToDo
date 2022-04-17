@@ -1,24 +1,45 @@
 let jwt = localStorage.getItem('token');
 let form = window.tag('form');
+let finalizarSessao = window.tag('#closeApp');
+
+/* Somente permite o acesso às tarefas se logado -----------------------------*/
+if(jwt == undefined){
+    alert('Voce precisa estar logado!');
+    window.location.href = '/index.html';
+}
+
+/* Carregando o nome ---------------------------------------------------- */
 
 window.dadosApi('users/getMe', 'GET', undefined, jwt).then(dados => {
     window.tag('p').innerText = dados.firstName + ' ' + dados.lastName;
 })
 
-//Listando tarefas criadas
+/* Lipando a lista de tarefas --------------------------------------------- */
+
+let lis = window.tagClasses('tarefa');
+
+let i = lis.length;
+while(i>0){
+    
+    lis[i-1].remove();
+    i--
+}
+
+/* Listando tarefas criadas ---------------------------------------- */
+
 window.dadosApi('tasks','GET',undefined,jwt).then(dados => {
     if(typeof dados === 'object'){
         
         dados.forEach((item) =>{
-            
-            
-            
-            window.addTarefa('#skeleton', item.description, item.createdAt, item.id);
+              
+            window.addTarefa('#skeleton',item.description, item.createdAt, item.id, item.completed);
         });
         
         
     }
 });
+
+/* Adicionando uma tarefa ---------------------------------------------- */
 
 form.addEventListener('submit',(event)=>{
 
@@ -40,6 +61,11 @@ form.addEventListener('submit',(event)=>{
     }
 });
 
+/* Encerrando a sessão ---------------------------------------------- */
 
+finalizarSessao.addEventListener('click',() => {
+    localStorage.clear();
+    window.location.href = '/index.html';
+});
 
 

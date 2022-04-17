@@ -89,3 +89,11 @@ button {
   align-items: center;
   justify-content: center;
 }
+
+.error{
+  color:red;
+}
+
+.borda-vermelha{
+  border: 1px solid red;
+}
