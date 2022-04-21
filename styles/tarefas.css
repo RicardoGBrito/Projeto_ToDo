@@ -127,6 +127,7 @@ ul.tarefas-terminadas li div.not-done{
   
 }
 
+
 .tarefas-pendentes {
   display: flex;
   flex-direction: column;
@@ -156,27 +157,6 @@ ul.tarefas-terminadas li div.not-done{
   background-color: var(--secondary);
 }
 
-.tarefa:first-child .not-done::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: calc(.75em - 1px);
-  display: block;
-  height: 3em;
-  width: 2px;
-  background-color: var(--secondary);
-}
-
-.tarefa:not(:last-child) .not-done::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: calc(.75em - 1px);
-  display: block;
-  height: 4.5em;
-  width: 2px;
-  background-color: var(--secondary);
-}
 
 .tarefa .descricao {
   display: flex;
@@ -237,6 +217,41 @@ ul.tarefas-terminadas li div.not-done{
 .tarefas-terminadas .tarefa .descricao .nome {
   color: grey;
   text-decoration: line-through;
+}
+
+/* Animações --------------------------------------------------------------- */
+
+ul.tarefas-terminadas li.preenchido{
+  animation: desaparecer 1s linear;
+  
+}
+
+ul.tarefas-terminadas li{
+  animation: aparecer 1s linear;
+}
+
+ul.tarefas-pendentes li{
+  animation:aparecer 1s linear;
+  
+}
+ul.tarefas-pendentes li.preenchido{
+  animation: desaparecer 1s linear;
+}
+
+
+
+@keyframes desaparecer{
+  0%{opacity: 1;}
+  30%{opacity:0.2;}
+  60%{opacity: 0;}
+  100%{opacity: 0;}
+}
+
+@keyframes aparecer{
+  0%{opacity: 0;}
+  
+  100%{opacity: 1;}
+  
 }
 
 /* #skeleton .descricao{

@@ -6,14 +6,7 @@ let repetirSenha = window.tag('#repetir');
 let entradas = document.querySelectorAll('input');
 let form = window.tag('form');
 
-nome.addEventListener('blur',function(){
-    /* let nomesobrenome = nome.value.trim().split(' '); */
-
-    /* if(nome.value.trim().split(' ').length < 2){
-        window.campoErro('Digite seu nome e sobrenome', nome)
-    }; */
-
-});
+/* Definindo eventos de validação das entradas ----------------------- */
 
 email.addEventListener('blur',function(){
     
@@ -33,8 +26,11 @@ repetirSenha.addEventListener('blur',function(evento){
     };
 });
 
+/* Apagando erros ------------------------------------------------- */
+
 window.apagandoErros(entradas);
 
+/* Criando o cadastro ------------------------------------------------- */
 
 form.addEventListener('submit',function(evento){
     
@@ -45,15 +41,18 @@ form.addEventListener('submit',function(evento){
     
     
     if(erros.length === 0){
+        window.spinnerShow();
         let objJson = criarObj(nome, sobrenome, email, senha);
             
         window.dadosApi('users', 'POST', objJson).then(dados=>{
             if(typeof dados === 'object'){
-                console.log(dados);
+                
                 localStorage.setItem('token',dados.jwt);
+                window.spinnerHide();
                 window.location.href = '/index.html';
             }
             else{
+                window.spinnerHide();
                 alert(`Error: ${dados} `);
             };
         });
@@ -62,7 +61,7 @@ form.addEventListener('submit',function(evento){
 
 });
 
-
+/* Função para criar o objeto --------------------------------------- */
 
 function criarObj(nome, sobrenome, email, senha){
 

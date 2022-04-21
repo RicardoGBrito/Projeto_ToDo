@@ -16,6 +16,17 @@ window.tagClasses = (tagClass) => {
     return document.getElementsByClassName(tagClass);
 };
 
+/* Dados do spinner ------------------------------------------------------ */
+
+let loading = window.tag('.spinner-container');
+
+window.spinnerShow = () => {
+    loading.classList.add('show');
+};
+
+window.spinnerHide = () => {
+    loading.classList.remove('show');
+};
 /* Criando elementos --------------------------------------------------------------------- */
 
 window.criandoElemento = (tag, classe,id) =>{
@@ -66,7 +77,7 @@ window.dadosApi = (caminho, metodo, corpo, jwt) => {
 
 /* Criação de Tarefa com seus respectivos eventos ----------------------------------------------- */
 
-window.addTarefa = (identificacaoTag ,descricao, criacao, id, completed) => {
+window.addTarefa = (identificacaoTag ,descricao, criacao, id) => {
     
     let elemento = window.tag(identificacaoTag);
     let li = window.criandoElemento('li', "tarefa", parseInt(id))
@@ -92,7 +103,22 @@ window.addTarefa = (identificacaoTag ,descricao, criacao, id, completed) => {
     div2.appendChild(p2);
     div2.appendChild(p3);
 
-    //Criando o "li" com possibilidade de seleção da div
+    // A "li" precisa receber a classe 'preenchido' toda vez que for criada
+    // em tarefas-terminadas para que a animação aconteça.
+    
+    if(identificacaoTag =='.tarefa-terminada'){
+        li.classList.toggle('preenchido');
+        elemento.appendChild(li);
+        
+    }
+    else{
+
+        elemento.appendChild(li);
+    };
+
+    //Criando o "li" com possibilidade de seleção da div, ou seja, em qualquer 
+    //elemento que for clicado dentro da div, o caminho será capturado e será
+    //feita uma interpolação para comparar com as divs e selecionar a div desejada.
     
     li.addEventListener("click", (evento)=>{
         
@@ -117,25 +143,45 @@ window.addTarefa = (identificacaoTag ,descricao, criacao, id, completed) => {
     
     div1.addEventListener('click', (evento)=>{
         
-        let divDescricao = evento.target.nextElementSibling;
         
-        console.log(evento);
-
-        console.log(div1);
-        tarefaUpdate(divDescricao.firstChild.innerText, divDescricao.lastChild.innerText, evento.path[2]);
-
-        div1.classList.toggle('preenchido');
-
-        console.log(evento);
+        let divDescricao = evento.target.nextElementSibling; 
+        li.classList.toggle('preenchido');
+        
+        
+        setTimeout(function(){tarefaUpdate(divDescricao.firstChild.innerText, divDescricao.lastChild.innerText, evento.path[2])},450);
+        setTimeout(window.divSkelVazia,850);
+        setTimeout(window.ulTarefasTerminadasVazia,850);
+        
     });
     
-    //Caso uma tarefa tenha sido dada como concluída erroneamente, pode-se trazé-la de volta.
-    if(completed === true){
-        elemento.appendChild(li);
+};
+
+window.divSkelVazia = () => {
+    let elementoAnterior = divSkeleton.previousElementSibling;
+
+    if(divSkeleton.innerHTML === '') {
+        elementoAnterior.classList.remove('hide');
     }
     else{
-        elemento.appendChild(li);        
-    };    
+        if(!elementoAnterior.classList.contains('hide')){
+                
+            elementoAnterior.classList.add('hide');
+        };
+    };
+};
+
+window.ulTarefasTerminadasVazia = () => {
+    let first = ulTarefasTerminadas.firstElementChild;
+    let last = ulTarefasTerminadas.lastElementChild;
+    if(first == last) {
+        first.classList.remove('hide');
+    }
+    else{
+        if(!first.classList.contains('hide')){
+                
+            first.classList.add('hide');
+        };
+    };
 };
 
 /* Criando evento na window para deletar uma ou várias tarefas na API --------------------------- */
@@ -145,7 +191,7 @@ window.addEventListener('keyup', (event)=>{
     if((event.key === 'Delete')&&(selecionados.length >0)){  
         
         if(confirm('Quer mesmo apagar esta(s) tarefa(s)?')==true){
-            console.log(selecionados);
+            
             let i = selecionados.length;
             while(i>0){
                 let elementoId = selecionados[i-1].lastChild.innerText;
@@ -155,6 +201,8 @@ window.addEventListener('keyup', (event)=>{
                 i--;
             }                        
         };
+        window.divSkelVazia();
+        window.ulTarefasTerminadasVazia();
         
     };    
 });
@@ -162,8 +210,10 @@ window.addEventListener('keyup', (event)=>{
 
 /* Faz o update da tarefa, definindo-a como completa ou incompleta, e colocando-a no seu respectivo lugar nas tarefas. */
 
+
 function tarefaUpdate(descricao, id, path){
     
+    //Caso uma tarefa tenha sido dada como concluída erroneamente, pode-se trazé-la de volta.
     if(path.classList.contains('tarefas-terminadas')){
         
         let objBody = {
@@ -173,7 +223,7 @@ function tarefaUpdate(descricao, id, path){
         
         window.dadosApi(`tasks/${id}`,'PUT', objBody,jwt).then(dados => {
             window.apagarTarefa(dados.id);
-            window.addTarefa('#skeleton', dados.description, dados.createdAt, dados.id, dados.completed)
+            window.addTarefa('#skeleton', dados.description, dados.createdAt, dados.id, dados.completed);
         })
     }
     else{
@@ -183,8 +233,8 @@ function tarefaUpdate(descricao, id, path){
         }
         
         window.dadosApi(`tasks/${id}`,'PUT', objBody,jwt).then(dados => {
-            window.addTarefa('.tarefas-terminadas', dados.description, dados.createdAt, dados.id, dados.completed)
             window.apagarTarefa(dados.id);
+            window.addTarefa('.tarefas-terminadas', dados.description, dados.createdAt, dados.id, dados.completed);
         })
     }
 
