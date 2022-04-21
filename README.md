@@ -72,28 +72,28 @@ Os scripts de dependência contem as funções e classes que serão utilizadas p
 
 ### Arquivos do projeto
 
-├── .vscode
-│ ├── settings.json
-├── assets
-├── scripts
-│ ├── index.js
-│ ├── signup.js
-│ └── tasks.js
-│ └── utils.js
-├── styles
-│ ├── acesso.css
-│ ├── commmon.css
-│ ├── tarefas.css
-├── index.html
-└── README.md
-├── signup.html
-├── tasks.html
+- ├── .vscode
+- │ ├── settings.json
+- ├── assets
+- ├── scripts
+- │ ├── index.js
+- │ ├── signup.js
+- │ └── tasks.js
+- │ └── utils.js
+- ├── styles
+- │ ├── acesso.css
+- │ ├── commmon.css
+- │ ├── tarefas.css
+- ├── index.html
+- └── README.md
+- ├── signup.html
+- ├── tasks.html
 
 ### Páginas:
 
-**/index.html** : Página de entrada, onde será solicitado seu e-mail e senha para acesso as tarefas.
-**/signup.html**: Página de cadastro, onde será solicitado seus dados e um e-mail e senha para um um novo acesso.
-**/tasks.html**: Página de tarefas, onde você poderá visualizar, adicionar e remover suas tarefas (usuário logado na sessão).
+- **/index.html** : Página de entrada, onde será solicitado seu e-mail e senha para acesso as tarefas.
+- **/signup.html**: Página de cadastro, onde será solicitado seus dados e um e-mail e senha para um um novo acesso.
+- **/tasks.html**: Página de tarefas, onde você poderá visualizar, adicionar e remover suas tarefas (usuário logado na sessão).
 
 ### Scripts
 
